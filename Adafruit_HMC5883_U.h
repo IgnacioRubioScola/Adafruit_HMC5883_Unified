@@ -59,6 +59,20 @@ typedef enum {
 } hmc5883MagGain;
 
 /*!
+ * @brief Magnetometer frequency settings
+ */
+typedef enum {
+  HMC5883_MAGFREQ_0_75 = 0x00, // 0.75
+  HMC5883_MAGFREQ_1_5 = 0x04, // 1.5
+  HMC5883_MAGFREQ_3 = 0x08, // 3
+  HMC5883_MAGFREQ_7_5 = 0x0C, // 7.5
+  HMC5883_MAGFREQ_15 = 0x10, // 15
+  HMC5883_MAGFREQ_30 = 0x14, // 30
+  HMC5883_MAGFREQ_75 = 0x18  // 75
+} hmc5883MagFreq;
+
+
+/*!
  * @brief Internal magnetometer data type
  */
 typedef struct hmc5883MagData_s {
@@ -75,19 +89,22 @@ typedef struct hmc5883MagData_s {
 
 //! Unified sensor driver for the magnetometer ///
 class Adafruit_HMC5883_Unified : public Adafruit_Sensor {
- public:
+public:
   /*!
    * @param sensorID sensor ID, -1 by default
    */
   Adafruit_HMC5883_Unified(int32_t sensorID = -1);
 
-  bool begin(void); //!< @return Returns whether connection was successful
+  bool begin(hmc5883MagGain gain); //!< @return Returns whether connection was successful
   void setMagGain(hmc5883MagGain gain); //!< @param gain Desired magnetic gain
-  bool getEvent(
-      sensors_event_t*); //!< @return Returns the most recent sensor event
-  void getSensor(sensor_t*);
+  void setMagFreq(hmc5883MagFreq freq); //!< @param gain Desired magnetic gain
+  float getMagGainXY(void); //!< Get magnetic gainXY
+  float getMagGainZ(void); //!<  Get magnetic gainZ
+  bool
+  getEvent(sensors_event_t *); //!< @return Returns the most recent sensor event
+  void getSensor(sensor_t *);
 
- private:
+private:
   hmc5883MagGain _magGain;
   hmc5883MagData _magData; // Last read magnetometer data will be available here
   int32_t _sensorID;
