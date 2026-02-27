@@ -32,11 +32,14 @@
 #endif
 
 #ifdef __AVR_ATtiny85__
-#include "Tinywire1M.h"
+#include "TinywireM.h"
 #define Wire TinyWireM
 #else
 #include <Wire.h>
 #endif
+
+//First Enable second I2C
+//Wire1.begin(pin_SDA,pin_SCL);
 
 #include <limits.h>
 
@@ -166,9 +169,7 @@ Adafruit_HMC5883_Unified::Adafruit_HMC5883_Unified(int32_t sensorID) {
 /**************************************************************************/
 // Should activative outside Wire1.begin(pin_SDA,pin_SCL);
 bool Adafruit_HMC5883_Unified::begin(hmc5883MagGain gain) {
-  // Enable I2C
-  //Wire1.begin(pin_SDA,pin_SCL);
-
+  
   // Enable the magnetometer
   write8(HMC5883_ADDRESS_MAG, HMC5883_REGISTER_MAG_MR_REG_M, 0x00);
 
